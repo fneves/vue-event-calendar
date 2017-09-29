@@ -207,7 +207,7 @@ module.exports = function normalizeComponent (
     format: 'MM/yyyy',
     fullFormat: 'dd/MM/yyyy',
     dayEventsTitle: 'All Events',
-    notHaveEvents: 'Not Have Events'
+    notHaveEvents: 'No Events'
   },
   zh: {
     dayNames: ["日", "一", "二", "三", "四", "五", "六"],
@@ -503,6 +503,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -712,13 +713,13 @@ var inBrowser = typeof window !== 'undefined';
       var events = this.events.filter(function (event) {
         return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools_js__["a" /* isEqualDateStr */])(event.date, date);
       });
-      if (events.length > 0) {
-        this.selectedDayEvents = {
-          date: date,
-          events: events
-        };
-      }
-      this.$emit('day-changed', {
+
+      //if (events.length > 0) {
+      this.selectedDayEvents = {
+        date: date,
+        events: events
+        //}
+      };this.$emit('day-changed', {
         date: date,
         events: events
       });
@@ -983,7 +984,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "color": _vm.calendarOptions.options.color
     }
   }, [_vm._t("default", null, {
-    showEvents: _vm.selectedDayEvents.events
+    showEvents: _vm.selectedDayEvents.events,
+    date: _vm.selectedDayEvents.date
   })], 2)], 1)
 },staticRenderFns: []}
 
@@ -1027,7 +1029,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "item",
       class: ( _obj = {
         today: date.status ? (_vm.today == date.date) : false,
-          event: date.status ? (date.title != undefined) : false
+          event: date.status ? (date.title != undefined) : false,
+          clickable_item: !!date.status
       }, _obj[_vm.calendar.options.className] = (date.date == _vm.selectedDay), _obj )
     }, [_c('p', {
       staticClass: "date-num",

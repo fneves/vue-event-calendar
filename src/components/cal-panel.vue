@@ -14,13 +14,7 @@
         </span>
       </div>
       <div class="dates" >
-        <div v-for="date in dayList" class="item"
-          :class="{
-            today: date.status ? (today == date.date) : false,
-            event: date.status ? (date.title != undefined) : false,
-            clickable_item: !!date.status,
-            [calendar.options.className] : (date.date == selectedDay)
-          }">
+        <div v-for="date in dayList" class="item" :class="computedDateClasses(date)">
           <p class="date-num"
             @click="handleChangeCurday(date)"
             :style="{color: date.title != undefined ? ((date.date == selectedDay) ? '#fff' : customColor) : 'inherit'}">
@@ -58,6 +52,14 @@ export default {
     selectedDay: {
       type: String,
       required: false
+    },
+
+    extraClassCalculator: {
+      type: Function,
+      required: false,
+      default: function(date, selectedDay) {
+        return ''
+      }
     }
   },
   computed: {
@@ -111,6 +113,17 @@ export default {
     }
   },
   methods: {
+    computedDateClasses (date) {
+      var classes = {
+        today: date.status ? (this.today == date.date) : false,
+        event: date.status ? (date.title != undefined) : false,
+        clickable_item: !!date.status,
+        [this.calendar.options.className] : (date.date == this.selectedDay)
+      }
+      classes[this.extraClassCalculator(date, this.selectedDay)] = true
+      return classes
+    },
+
     nextMonth () {
       this.$EventCalendar.nextMonth()
       this.$emit('month-changed', this.curYearMonth)

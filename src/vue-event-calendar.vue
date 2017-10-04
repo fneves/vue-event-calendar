@@ -5,6 +5,7 @@
       :calendar="calendarOptions"
       :selectedDay='selectedDayEvents.date'
       @cur-day-changed="handleChangeCurDay"
+      :extraClassCalculator='extraDatesClassCalculator'
       @month-changed="handleMonthChanged">
     </cal-panel>
     <cal-events
@@ -37,6 +38,13 @@ export default {
     }
   },
   props: {
+    extraDatesClassCalculator: {
+      type: Function,
+      required: false,
+      default: function(date, selectedDay) {
+        return ''
+      }
+    },
     events: {
       type: Array,
       required: true,

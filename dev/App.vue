@@ -8,7 +8,7 @@
       @month-changed="handleMonthChanged"
     ></vue-event-calendar>
     <h2 class="t-center">Custom template</h2>
-    <vue-event-calendar :events="demoEvents">
+    <vue-event-calendar :events="demoEvents" :extraDatesClassCalculator="extraDatesClassCalculator">
       <template scope="props">
         <div class="add-item" v-if="props.date != 'all'">
           +
@@ -70,12 +70,29 @@ export default {
     handleDayChanged (data) {
     },
     handleMonthChanged (data) {
+    },
+    extraDatesClassCalculator(date, selectedDay) {
+      console.log("Calculating classes for " + date.date + " where selected day is " + selectedDay)
+      if (date.date == selectedDay) {
+        return "blink"
+      }
+
+      return ''
     }
   }
 }
 </script>
 
 <style>
+
+.blink {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% { opacity: 0; }
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

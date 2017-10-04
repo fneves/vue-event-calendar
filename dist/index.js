@@ -468,12 +468,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__i18n_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tools_js__ = __webpack_require__(0);
-//
-//
-//
-//
-//
-//
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -529,6 +525,14 @@ var inBrowser = typeof window !== 'undefined';
     selectedDay: {
       type: String,
       required: false
+    },
+
+    extraClassCalculator: {
+      type: Function,
+      required: false,
+      default: function _default(date, selectedDay) {
+        return '';
+      }
     }
   },
   computed: {
@@ -585,6 +589,15 @@ var inBrowser = typeof window !== 'undefined';
     }
   },
   methods: {
+    computedDateClasses: function computedDateClasses(date) {
+      var classes = _defineProperty({
+        today: date.status ? this.today == date.date : false,
+        event: date.status ? date.title != undefined : false,
+        clickable_item: !!date.status
+      }, this.calendar.options.className, date.date == this.selectedDay);
+      classes[this.extraClassCalculator(date, this.selectedDay)] = true;
+      return classes;
+    },
     nextMonth: function nextMonth() {
       this.$EventCalendar.nextMonth();
       this.$emit('month-changed', this.curYearMonth);
@@ -629,6 +642,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -652,6 +666,13 @@ var inBrowser = typeof window !== 'undefined';
   },
 
   props: {
+    extraDatesClassCalculator: {
+      type: Function,
+      required: false,
+      default: function _default(date, selectedDay) {
+        return '';
+      }
+    },
     events: {
       type: Array,
       required: true,
@@ -971,7 +992,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "events": _vm.events,
       "calendar": _vm.calendarOptions,
-      "selectedDay": _vm.selectedDayEvents.date
+      "selectedDay": _vm.selectedDayEvents.date,
+      "extraClassCalculator": _vm.extraDatesClassCalculator
     },
     on: {
       "cur-day-changed": _vm.handleChangeCurDay,
@@ -1027,11 +1049,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, _vm._l((_vm.dayList), function(date) {
     return _c('div', {
       staticClass: "item",
-      class: ( _obj = {
-        today: date.status ? (_vm.today == date.date) : false,
-          event: date.status ? (date.title != undefined) : false,
-          clickable_item: !!date.status
-      }, _obj[_vm.calendar.options.className] = (date.date == _vm.selectedDay), _obj )
+      class: _vm.computedDateClasses(date)
     }, [_c('p', {
       staticClass: "date-num",
       style: ({
@@ -1054,7 +1072,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         backgroundColor: (date.date == _vm.selectedDay) ? _vm.customColor : 'inherit'
       })
     }) : _vm._e()])
-    var _obj;
   }))])])
 },staticRenderFns: []}
 

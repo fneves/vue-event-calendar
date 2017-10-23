@@ -156,7 +156,7 @@ export default {
 @small-padding: 10px;
 
 @icon-border-size: 1px;
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 769px) {
   .__vev_calendar-wrapper{
     max-width: 1200px;
     margin: 0 auto;
